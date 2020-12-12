@@ -1,0 +1,11 @@
+version : "3"
+
+services:
+  mqttBroker:
+    image: eclipse-mosquitto
+    expose:
+      - 1883
+    ports:
+      - 1883:1883
+    networks:
+      - default
