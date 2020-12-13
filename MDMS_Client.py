@@ -50,7 +50,7 @@ class recieveProductionThread(threading.Thread):
 class publishPriceThread(threading.Thread):
     
     def run(self):
-        client = paho.Client("MDMS_Client")
+        client = paho.Client("MDMS_Client1")
         client.on_publish = on_publish
         client.connect(broker_address,port)
         while True:
@@ -64,7 +64,7 @@ class publishPriceThread(threading.Thread):
 class publishReductionThread(threading.Thread):
     
     def run(self):
-        client = paho.Client("MDMS_Client")
+        client = paho.Client("MDMS_Client2")
         client.on_publish = on_publish
         client.connect(broker_address,port)
         while True:
@@ -78,7 +78,7 @@ class publishReductionThread(threading.Thread):
 try:
     
     thread1=publishPriceThread()
-    thread2=publishReductionThread
+    thread2=publishReductionThread()
     thread3=recieveConsommationThread()
     thread4=recieveProductionThread()
   

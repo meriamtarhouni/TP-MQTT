@@ -1,11 +1,12 @@
-version : "3"
+version: "3.5"
 
 services:
-  mqttBroker:
+ mosquitto:
     image: eclipse-mosquitto
+    hostname: mosquitto
+    container_name: mosquitto
     expose:
-      - 1883
+      - "1883"
     ports:
-      - 1883:1883
-    networks:
-      - default
+      - "1883:1883"
+    network_mode: bridge
