@@ -1,9 +1,11 @@
 import paho.mqtt.client as paho
 from datetime import datetime
 import threading
+import time
 
 broker_address ="localhost"
 port = 1883
+timelive=60
 
 
 def on_connect1(client, userdata, flags, rc):
@@ -72,3 +74,19 @@ class publishReductionThread(threading.Thread):
             time.sleep(1)
 
             result = client.publish("/reductionTopic", msg)
+
+try:
+    
+    thread1=publishPriceThread()
+    thread2=publishReductionThread
+    thread3=recieveConsommationThread()
+    thread4=recieveProductionThread()
+  
+    thread1.start()
+    thread2.start()
+    thread3.start()
+    thread4.start()
+
+except:
+
+    print ("Error: unable to start thread")
