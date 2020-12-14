@@ -9,11 +9,11 @@ timelive=60
 
 def on_connect1(client, userdata, flags, rc):
     print("Connected with result code " + str(rc))
-    client.subscribe('/priceTopic')
+    client.subscribe('/priceTopic',qos=1)
 
 def on_connect2(client, userdata, flags, rc):
     print("Connected with result code " + str(rc))
-    client.subscribe('/reductionTopic')
+    client.subscribe('/reductionTopic',qos=2)
 
 def on_message(client, userdata, msg):
     now = datetime.now()
@@ -21,7 +21,7 @@ def on_message(client, userdata, msg):
     print(current_time+" "+msg.topic+" "+str(msg.payload))
 
 def on_publish(client, userdata, result):
-    print("Data published by SM")
+    print("Data published by SM ")
 
 
 class publishConsommationThread(threading.Thread):
@@ -33,10 +33,10 @@ class publishConsommationThread(threading.Thread):
         while True:
             now = datetime.now()
             current_time = now.strftime("%H:%M:%S")
-            msg= "Connsommation Data sent at" + current_time
+            msg= "Connsommation Data sent at " + current_time
             time.sleep(60)
 
-            result = client.publish("/connsommationTopic", msg)
+            result = client.publish("/connsommationTopic", msg,qos=1)
 
 
 class publishProductionThread(threading.Thread):
@@ -48,10 +48,10 @@ class publishProductionThread(threading.Thread):
         while True:
             now = datetime.now()
             current_time = now.strftime("%H:%M:%S")
-            msg= "Production Data sent at" + current_time
+            msg= "Production Data sent at " + current_time
             time.sleep(15)
 
-            result = client.publish("/productionTopic", msg)
+            result = client.publish("/productionTopic", msg,qos=1)
 
 
 class recievePriceThread(threading.Thread):
@@ -78,6 +78,8 @@ try:
     thread2=recieveReductionThread()
     thread3=publishProductionThread()
     thread4=publishConsommationThread()
+    
+    
     thread1.start()
     thread2.start()
     thread3.start()

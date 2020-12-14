@@ -10,11 +10,11 @@ timelive=60
 
 def on_connect1(client, userdata, flags, rc):
     print("Connected with result code " + str(rc))
-    client.subscribe('/connsommationTopic')
+    client.subscribe('/connsommationTopic',qos=2)
 
 def on_connect2(client, userdata, flags, rc):
     print("Connected with result code " + str(rc))
-    client.subscribe('/productionTopic')
+    client.subscribe('/productionTopic',qos=2)
 
 
 def on_message(client, userdata, msg):
@@ -55,11 +55,11 @@ class publishPriceThread(threading.Thread):
         client.connect(broker_address,port)
         while True:
             now = datetime.now()
-            current_time = now.strftime("%H:%M:%S")
-            msg= "Price Data sent at" + current_time
+            current_time = now.strftime(" %H:%M:%S ")
+            msg= "Price Data sent at " + current_time
             time.sleep(60)
 
-            result = client.publish("/priceTopic", msg)
+            result = client.publish("/priceTopic", msg,qos=0)
 
 class publishReductionThread(threading.Thread):
     
@@ -73,7 +73,7 @@ class publishReductionThread(threading.Thread):
             msg= "Reduction Data sent at" + current_time
             time.sleep(1)
 
-            result = client.publish("/reductionTopic", msg)
+            result = client.publish("/reductionTopic", msg,qos=1)
 
 try:
     
@@ -82,6 +82,7 @@ try:
     thread3=recieveConsommationThread()
     thread4=recieveProductionThread()
   
+ 
     thread1.start()
     thread2.start()
     thread3.start()
